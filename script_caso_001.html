@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VÍCTIMA — Master Script & AI Production Case 001</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Mono:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --negro: #0a0a0a;
+    --blanco: #f0ece4;
+    --rojo: #c0392b;
+    --gris-oscuro: #1a1a1a;
+    --gris-medio: #2e2e2e;
+    --papel: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--negro);
+    color: var(--blanco);
+    font-family: 'EB Garamond', serif;
+    line-height: 1.6;
+  }
+
+  /* NAVEGACIÓN Y CABECERA */
+  .nav-top {
+    background: var(--gris-oscuro);
+    padding: 20px;
+    border-bottom: 1px solid #333;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-top a {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--rojo);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 2px;
+    border: 1px solid var(--rojo);
+    padding: 8px 15px;
+    text-transform: uppercase;
+  }
+  .header-documento {
+    max-width: 1000px;
+    margin: 60px auto;
+    text-align: center;
+    padding: 0 20px;
+  }
+  .tipo-doc { font-family: 'IBM Plex Mono'; font-size: 11px; color: var(--rojo); letter-spacing: 5px; text-transform: uppercase; }
+  .titulo-doc { font-family: 'Playfair Display'; font-size: 60px; font-weight: 900; margin: 15px 0; }
+
+  /* CAJAS TÉCNICAS */
+  .seccion-tecnica {
+    max-width: 900px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+  }
+  .caja-info { background: #0f0f0f; border: 1px solid #222; padding: 25px; }
+  .caja-info h3 { font-family: 'IBM Plex Mono'; font-size: 12px; color: var(--rojo); text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+  .caja-info p, .caja-info li { font-size: 15px; color: #999; margin-bottom: 10px; }
+
+  /* --- ESTRUCTURA DEL GUION (LAS HOJAS) --- */
+  
+  .contenedor-guion {
+    max-width: 900px;
+    margin: 60px auto;
+    background: transparent; /* Importante: el fondo es el de las hojas */
+  }
+
+  .hoja-guion {
+    background: var(--papel);
+    color: #1a1a1a;
+    padding: 100px 100px; /* Margen real de guion */
+    margin-bottom: 50px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    position: relative; /* Esto permite que los números de página no se amontonen */
+    min-height: 1100px; /* Longitud de un folio */
+  }
+
+  /* Los elementos que se amontonaban ahora se fijan a cada hoja */
+  .pagina-num { 
+    position: absolute; 
+    top: 50px; 
+    right: 50px; 
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px; 
+    color: #999; 
+  }
+
+  .time-marker { 
+    position: absolute; 
+    top: 50px; 
+    left: 50px; 
+    background: var(--negro); 
+    color: white; 
+    padding: 3px 10px; 
+    font-family: 'IBM Plex Mono'; 
+    font-size: 10px; 
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  /* FORMATO TEXTO DE GUION (Estilo Courier) */
+  .slugline { font-family: 'Courier Prime', monospace; font-weight: bold; margin-top: 35px; margin-bottom: 15px; text-transform: uppercase; font-size: 16px; border-bottom: 1px solid #eee; }
+  .accion { font-family: 'Courier Prime', monospace; margin-bottom: 15px; line-height: 1.2; text-align: justify; font-size: 16px; }
+  .personaje { font-family: 'Courier Prime', monospace; text-align: center; width: 50%; margin: 25px auto 0; font-weight: bold; text-transform: uppercase; font-size: 16px; }
+  .parentesis { font-family: 'Courier Prime', monospace; text-align: center; width: 40%; margin: 0 auto; font-size: 14px; line-height: 1.1; }
+  .dialogo { font-family: 'Courier Prime', monospace; text-align: center; width: 70%; margin: 0 auto 15px; line-height: 1.2; font-size: 16px; }
+  .transicion { font-family: 'Courier Prime', monospace; text-align: right; margin-top: 40px; font-weight: bold; text-transform: uppercase; font-size: 16px; }
+
+  /* MANUAL IA */
+  .manual-ia { max-width: 900px; margin: 60px auto; padding: 40px; background: #050505; border: 1px solid #111; }
+  .manual-ia h2 { font-family: 'Playfair Display'; font-size: 32px; color: white; margin-bottom: 30px; }
+  .prompt-group { margin-bottom: 40px; border-left: 3px solid var(--rojo); padding-left: 20px; }
+  .prompt-label { font-family: 'IBM Plex Mono'; color: var(--rojo); font-size: 12px; font-weight: bold; display: block; margin-bottom: 10px; }
+  .prompt-content { font-family: 'Courier Prime'; background: #111; padding: 15px; color: #ccc; font-size: 14px; border: 1px solid #222; }
+
+  footer { padding: 80px 0; text-align: center; color: #333; font-family: 'IBM Plex Mono'; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<nav class="nav-top">
+  <div style="font-family: 'Playfair Display'; font-weight: 900; font-size: 20px;">VÍ<span>C</span>TIMA</div>
+  <div style="display: flex; gap: 15px;">
+    <a href="episodios_01_04.html">Proyecto</a>
+    <a href="#manual-ia" style="border-color: #555; color: #888;">Parámetros IA</a>
+  </div>
+</nav>
+
+<div class="header-documento">
+  <span class="tipo-doc">Shooting Script / Guía de Producción Técnica</span>
+  <h1 class="titulo-doc">001 — La Granja</h1>
+  <p style="font-family: 'IBM Plex Mono'; color: #666; letter-spacing: 2px;">VÍCTIMA MASCULINA: ERNESTO V. | PERPETRADORA: LUCÍA V.</p>
+</div>
+
+<div class="seccion-tecnica">
+  <div class="caja-info">
+    <h3>Atmósfera Cinematográfica</h3>
+    <p>El ritmo debe ser insoportablemente lento. Buscamos la estética del "Slow Cinema". Cada segundo de los 10 minutos debe pesar. La cámara no debe moverse a menos que sea estrictamente necesario (Steadicam lenta).</p>
+  </div>
+  <div class="caja-info">
+    <h3>Dirección de Arte</h3>
+    <p>La granja debe parecer un mausoleo. Colores: Verde oliva, gris cemento, madera podrida. La comida que prepara Lucía debe verse visualmente apetitosa pero extrañamente plástica, artificial.</p>
+  </div>
+  <div class="caja-info">
+    <h3>Diseño Sonoro (Foley)</h3>
+    <ul>
+      <li>Mortero contra mármol (Eco seco).</li>
+      <li>Viento silbando en las rendijas de madera.</li>
+      <li>Reloj de pared (Tic-tac) que marca el tiempo de la muerte.</li>
+      <li>Deglución húmeda de Ernesto.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- EL GUION DE 10 PÁGINAS / 10 MINUTOS REALES -->
+<div class="contenedor-guion">
+
+  <!-- PÁGINA 1 -->
+  <div class="hoja-guion">
+    <div class="time-marker">00:00 - 01:00</div>
+    <div class="pagina-num">Pág. 1</div>
+    <div class="slugline">INT. COCINA DE LA GRANJA - AMANECER</div>
+    <div class="accion">La pantalla permanece en NEGRO. Escuchamos el sonido de la madera crujiendo por el frío y una respiración pausada, casi inaudible. FUNDIDO A:</div>
+    <div class="accion">EXTREMO PRIMER PLANO (MACRO). La superficie de mármol es un paisaje de grietas y manchas de grasa antigua. El silencio es absoluto, denso. Escuchamos el roce metálico de una llave entrando en una cerradura oxidada. Se oye el "clic" y el chirrido de una puerta de armario abriéndose.</div>
+    <div class="accion">Una mano enguantada en látex blanco deposita tres pastillas azules sobre el mármol. El sonido es un golpe seco, minúsculo. Un mortero de piedra pesada entra lateralmente en cuadro, su sombra oscurece las pastillas.</div>
+    <div class="accion">LUCÍA (38) comienza el proceso. El mazo desciende. No golpea con rabia, sino con una presión constante y rotatoria. El sonido es hipnótico: el crujido del recubrimiento plástico, luego la pulverización del núcleo químico. Lucía se toma su tiempo. Son veinte segundos de tiempo real centrados solo en la textura del polvo que se vuelve fino como la harina bajo el peso de la piedra.</div>
+    <div class="accion">Lucía levanta el mazo. Revisa el polvo con una inclinación de cabeza. Sopla levemente para limpiar el borde del mortero y vemos las motas flotar en un rayo de luz grisácea. Con un pincel pequeño, arrastra cada microgramo hacia un cuenco de cerámica donde espera un caldo espeso. Agita la mezcla con una cuchara de plata; el sonido del metal contra la cerámica es rítmico. El azul desaparece lentamente en el amarillo de la grasa. Lucía se quita los guantes; el sonido del látex contra la piel resuena como un latigazo. Se queda mirando el cuenco en silencio durante cinco segundos antes de tomar la bandeja.</div>
+  </div>
+
+  <!-- PÁGINA 2 -->
+  <div class="hoja-guion">
+    <div class="time-marker">01:00 - 02:00</div>
+    <div class="pagina-num">Pág. 2</div>
+    <div class="slugline">INT. DORMITORIO DE ERNESTO - CONTINUACIÓN</div>
+    <div class="accion">Luz mortecina de invierno. ERNESTO (67) está hundido en el colchón. Su respiración es un silbido húmedo. Tiene los ojos abiertos, fijos en una mancha de humedad del techo. Un hilo de sangre oscura ha cuajado en la comisura de su boca.</div>
+    <div class="accion">Lucía entra. Se detiene en el umbral. La cámara se mantiene en su rostro durante diez segundos (BEAT). No hay emoción, solo evaluación. Camina hacia la cama; cada paso hace gemir las tablas del suelo.</div>
+    <div class="personaje">LUCÍA</div>
+    <div class="dialogo">Papá. Ya es hora. Has vuelto a manchar la sábana.</div>
+    <div class="accion">Deja la bandeja. El sonido de la madera golpeando la mesilla es violento. Moja un paño en un cuenco con agua fría. Comienza a limpiar la cara de Ernesto. No es una caricia; es una limpieza técnica, brusca. Ernesto intenta apartar la cara, pero ella le sujeta la mandíbula con una fuerza que hace que sus dedos se hundan en la piel pálida del anciano.</div>
+    <div class="personaje">ERNESTO</div>
+    <div class="parentesis">(un susurro quebrado)</div>
+    <div class="dialogo">No... no tengo hambre. Me arde... aquí dentro... como si tuviera cristales.</div>
+    <div class="personaje">LUCÍA</div>
+    <div class="dialogo">Es el ácido, papá. El estómago se queja porque está vacío. Tienes que ser fuerte. Bebe.</div>
+    <div class="accion">Ella llena la cuchara. Se la acerca a los labios. Ernesto aprieta los dientes. Lucía introduce un dedo en la comisura de su boca y presiona el maxilar. Es un movimiento experto. Ernesto abre la boca por puro dolor. Ella vierte el caldo.</div>
+  </div>
+
+  <!-- PÁGINA 3 -->
+  <div class="hoja-guion">
+    <div class="time-marker">02:00 - 03:00</div>
+    <div class="pagina-num">Pág. 3</div>
+    <div class="accion">Ernesto traga. El sonido de su garganta es un esfuerzo mecánico, doloroso. Lucía espera a que termine de tragar antes de llenar la siguiente cuchara. Se toma su tiempo, dejando que el anciano recupere el aliento entre cada toma.</div>
+    <div class="accion">Un poco de caldo rosáceo escapa por la comisura de Ernesto y mancha la colcha. Lucía se detiene. Mira la mancha durante varios segundos en silencio. El tic-tac de un reloj de pared se vuelve protagonista en el diseño sonoro.</div>
+    <div class="personaje">LUCÍA</div>
+    <div class="dialogo">Traga, papá. No vamos a desperdiciar la medicina. Sabes lo que cuesta traer al doctor desde la ciudad.</div>
+    <div class="accion">Ella recoge el resto del caldo del borde del cuenco y lo obliga a tomar la última porción. Al terminar, deja el cuenco vacío sobre la bandeja. Toma el paño sucio y le limpia los labios con un movimiento circular, lento, humillante.</div>
+    <div class="accion">Lucía se levanta. Revisa el pañuelo con el que Ernesto se limpió la nariz; está empapado. Lo dobla con cuidado y lo guarda en el bolsillo de su delantal. Camina hacia la puerta, apaga la luz pequeña de la mesilla y sale. Escuchamos el sonido de la llave girando en la cerradura por fuera. Ernesto se queda en la penumbra total. Solo oímos su respiración, que poco a poco se vuelve más errática.</div>
+  </div>
+
+  <!-- PÁGINA 4 -->
+  <div class="hoja-guion">
+    <div class="time-marker">03:00 - 04:00</div>
+    <div class="pagina-num">Pág. 4</div>
+    <div class="slugline">INT. SALÓN DE LA GRANJA - TARDE</div>
+    <div class="accion">El MÉDICO RURAL (60) se limpia las manos con una toalla que Lucía sostiene. El médico tiene el rostro cansado, su maletín de cuero está abierto sobre la mesa, mostrando frascos de cristal.</div>
+    <div class="personaje">MÉDICO</div>
+    <div class="dialogo">Es la anemia senil, Lucía. El cuerpo de Ernesto simplemente ha decidido que ya no quiere retener la vida. A su edad, el hierro es como arena entre los dedos.</div>
+    <div class="personaje">LUCÍA</div>
+    <div class="dialogo">¿Y los hematomas, doctor? Ayer aparecieron tres más en su espalda. Ni siquiera se ha movido de la cama.</div>
+    <div class="accion">El médico se encoge de hombros mientras guarda el estetoscopio. Se toma un momento para mirar un retrato antiguo de la familia en la pared.</div>
+    <div class="personaje">MÉDICO</div>
+    <div class="dialogo">Fragilidad capilar extrema. Es lo normal. No hay nada que hacer salvo mantenerlo cómodo. No lo lleves a la ciudad, Lucía. El viaje lo mataría en la ambulancia por el puro estrés. Déjalo que se apague aquí, en su casa. Está en las mejores manos.</div>
+    <div class="accion">Lucía asiente con una humildad ensayada. Acompaña al médico a la puerta. El plano se mantiene en ella mientras observa cómo el coche se aleja por el camino de tierra. Ella permanece en el umbral durante quince segundos, sintiendo el frío en la cara. El polvo del camino tarda en asentarse. Ella cierra la puerta y se queda apoyada contra la madera en la oscuridad del recibidor, escuchando el silencio.</div>
+  </div>
+
+  <!-- PÁGINA 5 -->
+  <div class="hoja-guion">
+    <div class="time-marker">04:00 - 05:00</div>
+    <div class="pagina-num">Pág. 5</div>
+    <div class="slugline">EXT. PORCHE DE LA GRANJA - ATARDECER</div>
+    <div class="accion">RICARDO (65) fuma apoyado en su furgoneta. Observa a Lucía, que está tendiendo las sábanas de Ernesto en un barreño de metal. El viento agita la tela blanca, que muestra sombras rosáceas imposibles de borrar.</div>
+    <div class="personaje">RICARDO</div>
+    <div class="dialogo">He hablado con los de la cooperativa, Lucía. Dicen que Ernesto no ha ido a las reuniones en tres meses. Que ni siquiera responde al teléfono. Quieren saber qué pasa con la linde del norte.</div>
+    <div class="personaje">LUCÍA</div>
+    <div class="parentesis">(sin mirarlo, con una pinza en la boca)</div>
+    <div class="dialogo">Mi padre ya no sabe lo que es el norte, tío Ricardo. Apenas tiene fuerzas para sostener la cabeza. Se le olvida quién soy a veces.</div>
+    <div class="personaje">RICARDO</div>
+    <div class="dialogo">Ayer entré cuando estabas en el pueblo. Le cogí la mano y... se le quedó la marca de mis dedos. Como si fuera de plastilina. Lucía... esto no es normal. Huele mal en esa habitación. Huele a algo que se pudre por dentro.</div>
+    <div class="accion">Lucía deja la cesta en el suelo con un golpe seco. Camina hacia Ricardo. Sus botas dejan marcas de agua en la madera del porche. Se detiene a escasos centímetros de su rostro. Ricardo parpadea, intimidado por la mirada fija de su sobrina.</div>
+    <div class="personaje">LUCÍA</div>
+    <div class="dialogo">¿Dudas de cómo cuido a mi padre? Si crees que puedes hacerlo mejor, las llaves están ahí. Pero prepárate. Prepárate para limpiarle las llagas a las cuatro de la mañana mientras él te maldice porque cree que eres el diablo. ¿Te quedarás? ¿Lo harás hoy?</div>
+    <div class="accion">Ricardo desvía la mirada. Tira la colilla al suelo y la aplasta con la bota. Sube a su furgoneta en silencio. Lucía observa cómo arranca y se marcha, dejándola sola con sus sábanas manchadas.</div>
+  </div>
+
+  <!-- PÁGINA 6 -->
+  <div class="hoja-guion">
+    <div class="time-marker">05:00 - 06:00</div>
+    <div class="pagina-num">Pág. 6</div>
+    <div class="slugline">INT. SALÓN DE LA GRANJA - MEDIODÍA (DÍAS DESPUÉS)</div>
+    <div class="accion">Un NOTARIO (50) despliega un documento sobre la mesa camilla. Ernesto está sentado frente a él, envuelto en una manta de lana pese al calor. Sus manos tiemblan sobre el regazo. Lucía está de pie tras él, como una sombra protectora.</div>
+    <div class="personaje">NOTARIO</div>
+    <div class="dialogo">Don Ernesto, para que este anexo sea válido, debe confirmar que es su voluntad expresa ceder la nuda propiedad de la finca íntegra a su hija Lucía Valdés, revocando cualquier disposición anterior. ¿Lo entiende?</div>
+    <div class="personaje">ERNESTO</div>
+    <div class="parentesis">(mirando al vacío)</div>
+    <div class="dialogo">Ella sabe... Lucía sabe qué hacer. La granja tiene que seguir... Yo solo quiero que dejen de dolerme los huesos.</div>
+    <div class="accion">Lucía le pone la pluma estilográfica en la mano derecha. Sus dedos están hinchados y amoratados. Ella guía la mano de su padre con una firmeza absoluta sobre la línea de puntos. La firma es un garabato tembloroso que se desvía del papel. El Notario guarda el documento con una expresión de incomodidad, evita mirar a Lucía a los ojos.</div>
+    <div class="accion">Lucía acompaña al Notario a la puerta. Regresa al salón y toma el documento original. Lo acaricia con la punta de los dedos. Mira a su padre, que se ha quedado dormido con la boca abierta. Lucía sonríe levemente; es la primera vez que vemos algo parecido a una emoción en su rostro. Es el alivio del éxito. Se queda contemplando el fuego extinguido de la chimenea durante treinta segundos.</div>
+  </div>
+
+  <!-- PÁGINA 7 -->
+  <div class="hoja-guion">
+    <div class="time-marker">06:00 - 07:00</div>
+    <div class="pagina-num">Pág. 7</div>
+    <div class="slugline">INT. DORMITORIO DE ERNESTO - NOCHE (SEMANAS DESPUÉS)</div>
+    <div class="accion">La cámara está en un PLANO FIJO DESDE EL UMBRAL DE LA PUERTA. El dormitorio está sumido en una penumbra azulada por la luna. Ernesto está en el suelo. Se ha caído de la cama intentando alcanzar la puerta. Sus pulmones gorgotean; el sonido es el de una cafetera hirviendo, constante y agónico.</div>
+    <div class="accion">Lucía aparece en el marco de la puerta. Vemos su silueta recortada por la luz del pasillo. Lleva su camisón blanco de algodón. No entra. No se mueve. Saca un reloj de bolsillo de plata y lo abre. El tic-tac del reloj se vuelve ensordecedor.</div>
+    <div class="accion">Vemos la agonía de Ernesto durante SESENTA SEGUNDOS de tiempo real. Sus dedos rasgan la alfombra, buscando un asidero. Su cuerpo se estremece en un espasmo final. Mira a su hija, que permanece impasible a dos metros de distancia, consultando su reloj. El gorgoteo de Ernesto se vuelve más lento... más espaciado... hasta que cesa tras un último estertor agudo. Lucía espera diez segundos adicionales de silencio absoluto antes de cerrar su reloj con un "clic" metálico. Entra en la habitación y le cierra los ojos con sus dedos fríos.</div>
+  </div>
+
+  <!-- PÁGINA 8 -->
+  <div class="hoja-guion">
+    <div class="time-marker">07:00 - 08:00</div>
+    <div class="pagina-num">Pág. 8</div>
+    <div class="slugline">INT. DORMITORIO DE ERNESTO - CONTINUACIÓN</div>
+    <div class="accion">Lucía levanta el cadáver de su padre. Es sorprendentemente fuerte. Lo acomoda en la cama, estirando sus miembros ya rígidos. Le coloca la manta hasta la barbilla. Va al baño y vuelve con un cubo de agua y lejía. Comienza a fregar el suelo donde Ernesto agonizó. Sus movimientos son rítmicos, coreografiados. Se toma su tiempo para borrar cualquier rastro de fluidos biológicos.</div>
+    <div class="accion">Una vez limpio, Lucía toma un vaso de cristal de la mesilla y lo estrella contra el suelo de madera cerca de la cama. Se dirige al espejo de la cómoda. Se despeina con violencia. Se frota los ojos con los nudillos hasta que se ponen rojos. Se desabrocha un botón de la bata.</div>
+    <div class="accion">Descuelga el teléfono. Marca el número de emergencias. Su voz cambia drásticamente: ahora es una hija atravesada por un terror agudo, desgarrador.</div>
+    <div class="personaje">LUCÍA (AL TELÉFONO)</div>
+    <div class="dialogo">¡Mi padre! ¡Por Dios, ayúdenme! ¡He oído un golpe sordo y está en el suelo! ¡Papá! ¡Responde, por favor! ¡No respira! ¡Mandad una ambulancia, rápido!</div>
+    <div class="accion">Mientras habla, Lucía mira el cadáver de su padre. Su rostro llora, pero sus ojos permanecen secos, observando fríamente si ha colocado bien los fragmentos del vaso roto. Cuelga y se sienta en el suelo, esperando la llegada de las luces azules.</div>
+  </div>
+
+  <!-- PÁGINA 9 -->
+  <div class="hoja-guion">
+    <div class="time-marker">08:00 - 09:00</div>
+    <div class="pagina-num">Pág. 9</div>
+    <div class="slugline">INT. LABORATORIO FORENSE - DÍA (MESES DESPUÉS)</div>
+    <div class="accion">Luz fluorescente blanca. Sonido de maquinaria centrífuga de fondo. Un FORENSE (45) observa una muestra de tejido hepático bajo el microscopio. Ricardo está sentado en una silla de metal frente a él, con el rostro hundido en las manos.</div>
+    <div class="personaje">FORENSE</div>
+    <div class="dialogo">No fue un infarto, señor Valdés. Su hermano murió de una hemorragia interna generalizada provocada por una intoxicación química crónica.</div>
+    <div class="accion">El forense deja una fotografía macro sobre la mesa: muestra estructuras cristalinas de un azul cobalto entrelazadas con células humanas muertas.</div>
+    <div class="personaje">FORENSE</div>
+    <div class="dialogo">Hemos encontrado Warfarina en dosis industriales en el hígado y en los bulbos capilares. Eso significa que fue administrada en cantidades precisas, día tras día, durante al menos tres meses. Ernesto fue desangrado por dentro mientras alguien le servía la cena con una sonrisa. Es un asesinato de goteo, ejecutado con una paciencia que no vemos a menudo.</div>
+    <div class="accion">Ricardo aprieta el informe hasta que sus nudillos se vuelven blancos y el papel se rasga. Mira la foto de los cristales azules como si fueran los ojos de su sobrina. Se levanta y sale de la sala sin decir una palabra.</div>
+  </div>
+
+  <!-- PÁGINA 10 -->
+  <div class="hoja-guion">
+    <div class="time-marker">09:00 - 10:00</div>
+    <div class="pagina-num">Pág. 10</div>
+    <div class="slugline">INT. SALA DE VISITAS (CÁRCEL) - DÍA</div>
+    <div class="accion">Lucía lleva el uniforme naranja de interna. Se ve descansada, con la piel limpia y el cabello perfectamente recogido. Ricardo está al otro lado del cristal de seguridad, sosteniendo el auricular con una mano temblorosa.</div>
+    <div class="personaje">RICARDO</div>
+    <div class="dialogo">¿Por qué lo hiciste? La granja ya era tuya por el nuevo testamento. Solo tenías que esperar un año, quizá menos. Te quería más que a su propia vida, Lucía.</div>
+    <div class="personaje">LUCÍA</div>
+    <div class="parentesis">(con una paz que hiela la sangre)</div>
+    <div class="dialogo">Él ya era solo una carga que apestaba la casa, Ricardo. Sus manos ya no sabían mandar sobre la tierra y la granja se moría con él. Yo solo aceleré lo inevitable. Le di el descanso que no sabía pedirse y le di a la granja la sangre nueva que necesitaba para no morir. No me arrepiento de nada. Solo de no haber empezado mucho antes.</div>
+    <div class="slugline">EPÍLOGO - PLANO DETALLE FINAL</div>
+    <div class="accion">La cámara se centra en la mesilla vacía de la habitación de Ernesto. Una fotografía antigua muestra a un Ernesto joven y fuerte con Lucía de niña en brazos. Una MANO anciana y amoratada (recreación de recuerdo) acaricia el cristal del marco. El plano se desvanece lentamente a rojo sangre.</div>
+    <div class="personaje">NARRADOR (V.O.)</div>
+    <div class="dialogo">Dato de cierre. En el 35% de los homicidios domésticos donde la víctima es un hombre mayor de 60 años, el perpetrador es un familiar femenino directo. El método más frecuente: envenenamiento o negligencia inducida, debido a que simulan fallos orgánicos naturales asociados a la senectud. Fuente: estudios forenses comparados (EE. UU., España, México). Nota: La cámara no muestra el momento de la muerte. Solo la mano del anciano sobre una foto de su hija de pequeña.</div>
+    <div class="transicion">FUNDE A NEGRO SÚBITO.</div>
+  </div>
+
+</div>
+
+<!-- SECCIÓN DE PARÁMETROS PARA IA (RESTAURADA Y AMPLIADA) -->
+<div id="manual-ia" class="manual-ia">
+  <h2>Manual de Producción IA</h2>
+
+  <div class="prompt-group">
+    <span class="prompt-label">MIDJOURNEY: DISEÑO DE PERSONAJES (CONSISTENCIA)</span>
+    <div class="prompt-content">
+      <strong>Ernesto V:</strong> Elderly Spanish farmer, 67yo, gaunt face, pale translucent skin with visible bruises, thin grey hair, wearing a worn-out heavy wool sweater. Cinematic lighting, hyper-realistic textures, 8k, photorealistic --ar 16:9 --v 6.0<br><br>
+      <strong>Lucía:</strong> Woman 38yo, severe and clinical expression, dark hair tied in a very tight bun, sharp nose, wearing a dark kitchen apron. Cold eyes, calculating look. Vermeer lighting style, high contrast, rustic kitchen background --ar 16:9 --v 6.0
+    </div>
+  </div>
+
+  <div class="prompt-group">
+    <span class="prompt-label">RUNWAY GEN-3 / LUMA: DINÁMICA DE VIDEO</span>
+    <div class="prompt-content">
+      <strong>Mortero:</strong> Macro extreme close up, slow motion, a stone pestle crushing a blue pill into fine white dust on a marble surface. Soft morning light, dust particles floating in the air. 35mm film grain.<br><br>
+      <strong>Muerte:</strong> Static cinematic shot, low angle, an old man's hand on a wooden floor reaching for a glass of water that is already broken. Blood drops on the floor. Somber atmosphere, dramatic shadows.
+    </div>
+  </div>
+
+  <div class="prompt-group">
+    <span class="prompt-label">ELEVENLABS: PERFIL DE VOZ (DATO DE CIERRE)</span>
+    <div class="prompt-content">
+      <strong>Voz:</strong> "The Narrator" (Deep baritone, very slow pace). <br>
+      <strong>Configuración:</strong> Stability: 65%, Clarity: 80%, Style Exaggeration: 0%. <br>
+      <strong>Nota:</strong> El tono debe ser puramente informativo, sin compasión, como si fuera una lectura de un informe policial.
+    </div>
+  </div>
+
+  <div class="prompt-group">
+    <span class="prompt-label">UDIO / SUNO: DISEÑO DE BANDA SONORA</span>
+    <div class="prompt-content">
+      Dark ambient drone, low frequency, experimental minimal, industrial scraping sounds, subtle heartbeat rhythm, somber and claustrophobic atmosphere. No melody.
+    </div>
+  </div>
+</div>
+
+<footer>
+  VÍCTIMA — Serie Completa · Caso 001 · Guion de Rodaje 1.0
+</footer>
+
+</body>
+</html>
