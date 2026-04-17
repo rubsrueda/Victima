@@ -1,10 +1,15 @@
+/* ============================================================
+   VARIABLES Y BASES
+   ============================================================ */
 :root {
   --negro: #0a0a0a;
   --blanco: #f0ece4;
   --rojo: #c0392b;
+  --azul: #2980b9;
   --gris-oscuro: #1a1a1a;
   --gris-medio: #2e2e2e;
   --gris-texto: #999;
+  --papel: #ffffff;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,10 +19,20 @@ body {
   color: var(--blanco);
   font-family: 'EB Garamond', serif;
   font-size: 18px;
-  line-height: 1.75;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* PORTADA */
+.contenedor {
+  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ============================================================
+   PORTADA (RESPONSIVA)
+   ============================================================ */
 .portada {
   min-height: 100vh;
   display: flex;
@@ -31,7 +46,7 @@ body {
 
 .titulo-principal {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(80px, 15vw, 160px);
+  font-size: clamp(60px, 15vw, 160px);
   font-weight: 900;
   letter-spacing: -4px;
   line-height: 0.85;
@@ -41,7 +56,7 @@ body {
 
 .tagline {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 5px;
   text-transform: uppercase;
   color: var(--gris-texto);
@@ -50,15 +65,16 @@ body {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
   margin-top: 60px;
+  width: 100%;
   max-width: 900px;
 }
 
 .stat-item .num {
   font-family: 'Playfair Display', serif;
-  font-size: 50px;
+  font-size: clamp(40px, 5vw, 55px);
   font-weight: 700;
   color: var(--rojo);
   display: block;
@@ -72,8 +88,10 @@ body {
   color: var(--gris-texto);
 }
 
-/* NAVEGACIÓN */
-.nav-episodios {
+/* ============================================================
+   NAVEGACIÓN PREMIUM
+   ============================================================ */
+.nav-episodios, .nav-top {
   background: var(--gris-oscuro);
   padding: 15px;
   position: sticky;
@@ -84,22 +102,30 @@ body {
 
 .nav-grid {
   display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  justify-content: flex-start;
   max-width: 1100px;
   margin: 0 auto;
+  scrollbar-width: none; /* Oculta scroll en Firefox */
+}
+
+.nav-grid::-webkit-scrollbar { display: none; } /* Oculta scroll en Chrome/Safari */
+
+@media (min-width: 768px) {
+  .nav-grid { flex-wrap: wrap; justify-content: center; overflow-x: visible; }
 }
 
 .nav-ep {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
-  padding: 6px 12px;
-  background: transparent;
+  padding: 8px 14px;
   color: var(--gris-texto);
   border: 1px solid #333;
   text-decoration: none;
   transition: 0.3s;
+  white-space: nowrap;
 }
 
 .nav-ep:hover, .nav-ep.active {
@@ -108,130 +134,104 @@ body {
   border-color: var(--rojo);
 }
 
-/* EPISODIO */
-.contenedor { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+/* ============================================================
+   EPISODIO Y CASOS (ESTILO BIBLIA)
+   ============================================================ */
+.ep-header { padding: 80px 0 50px; border-bottom: 1px solid #1e1e1e; }
+.ep-numero { font-family: 'IBM Plex Mono'; color: var(--rojo); font-size: 12px; letter-spacing: 5px; text-transform: uppercase; display: block; }
+.ep-titulo { font-family: 'Playfair Display'; font-size: clamp(40px, 8vw, 70px); font-weight: 900; margin: 15px 0; }
 
-.ep-header { padding: 80px 0 50px; }
-
-.ep-numero {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 5px;
-  color: var(--rojo);
-  text-transform: uppercase;
-  display: block;
-}
-
-.ep-titulo {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(40px, 8vw, 70px);
-  font-weight: 900;
-  margin: 15px 0;
-}
-
-.ep-subtitulo {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
-  color: var(--gris-texto);
-  margin-bottom: 30px;
-}
-
-/* CUADRITOS DE DISTRIBUCIÓN */
 .ep-distribucion {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 15px;
   background: #0a0a0a;
   padding: 20px;
   border: 1px solid #1a1a1a;
+  margin-top: 20px;
 }
 
-.dist-block { border-right: 1px solid #222; padding-right: 20px; }
-.dist-block:last-child { border: none; }
-
-.badge {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 5px;
+@media (min-width: 600px) {
+  .ep-distribucion { flex-direction: row; gap: 40px; }
 }
 
-.badge-m { color: var(--rojo); }
-.badge-h { color: #4a6fa5; }
+.dist-item { display: flex; flex-direction: column; gap: 8px; }
+.dist-label { font-family: 'IBM Plex Mono'; font-size: 9px; color: #555; text-transform: uppercase; }
 
-/* CASO */
-.caso {
-  margin: 60px 0;
-  padding: 40px;
-  background: #0f0f0f;
-  border-left: 5px solid #222;
-}
+.badge { font-family: 'IBM Plex Mono'; font-size: 10px; padding: 4px 10px; border: 1px solid; text-transform: uppercase; width: fit-content; }
+.badge-m { border-color: var(--rojo); color: var(--rojo); }
+.badge-h { border-color: var(--azul); color: var(--azul); }
+.badge-esp { border-color: #555; color: #555; }
 
+.caso { margin: 60px 0; padding: clamp(20px, 5vw, 40px); background: #0f0f0f; border-left: 5px solid #222; }
 .perp-femenina { border-left-color: var(--rojo); }
 
-.caso-header {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: var(--gris-texto);
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 25px;
-}
+/* TÍTULO CON LÍNEA DINÁMICA */
+.caso-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+.caso-num-tipo { font-family: 'IBM Plex Mono'; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+.header-line { flex: 1; height: 1px; background: #222; min-width: 50px; }
 
-.caso-titulo {
-  font-family: 'Playfair Display', serif;
-  font-size: 32px;
-  font-style: italic;
-  font-weight: 700;
-  margin-bottom: 30px;
-}
+.tipo-m { color: var(--rojo); }
+.tipo-h { color: var(--azul); }
+
+.caso-titulo-nombre { font-family: 'Playfair Display'; font-size: clamp(24px, 4vw, 32px); font-style: italic; margin-bottom: 25px; color: #fff; }
 
 .ficha {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 20px;
   border-top: 1px solid #222;
   padding-top: 25px;
 }
 
-.ficha-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  color: var(--gris-texto);
-  display: block;
+@media (min-width: 600px) {
+  .ficha { grid-template-columns: 1fr 1fr; }
 }
 
-.ficha-valor { font-family: 'EB Garamond', serif; font-size: 17px; }
+.ficha-label { font-family: 'IBM Plex Mono'; font-size: 10px; color: var(--gris-texto); text-transform: uppercase; letter-spacing: 2px; }
+.ficha-valor { font-family: 'EB Garamond'; font-size: 18px; color: #eee; }
 
-.caso-sinopsis {
-  margin: 30px 0;
-  font-size: 18px;
-  line-height: 1.8;
-  color: #ccc5ba;
+.caso-sinopsis { margin: 30px 0; font-size: 18px; line-height: 1.8; color: #ccc5ba; text-align: justify; }
+
+.dato-cierre { background: #050505; padding: 25px; border: 1px solid #1a1a1a; font-family: 'IBM Plex Mono'; font-size: 13px; line-height: 1.6; color: #888; }
+.dato-cierre strong { color: var(--rojo); display: block; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ============================================================
+   GUION TÉCNICO (LAS HOJAS DE 10 MINUTOS)
+   ============================================================ */
+.contenedor-guion { max-width: 900px; margin: 40px auto; padding-bottom: 100px; }
+
+.hoja-guion {
+  background: var(--papel);
+  color: #1a1a1a;
+  padding: clamp(40px, 10vw, 100px); /* Padding adaptable */
+  margin-bottom: 50px;
+  box-shadow: 0 10px 60px rgba(0,0,0,0.8);
+  position: relative;
+  min-height: auto;
 }
 
-.dato-cierre {
-  background: #050505;
-  padding: 25px;
-  border: 1px solid #1a1a1a;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
+@media (min-width: 768px) {
+  .hoja-guion { min-height: 1150px; }
 }
 
-.dato-cierre strong {
-  color: var(--rojo);
-  display: block;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
+.pagina-num { position: absolute; top: 30px; right: 40px; font-family: 'IBM Plex Mono'; font-size: 14px; color: #ccc; }
+.time-marker { position: absolute; top: 30px; left: 40px; background: #000; color: #fff; padding: 4px 12px; font-family: 'IBM Plex Mono'; font-size: 10px; font-weight: bold; }
 
-.divisor {
-  text-align: center;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 15px;
-  color: #222;
-  margin: 80px 0;
-}
+.slugline { font-family: 'Courier Prime', monospace; font-weight: bold; margin-top: 30px; margin-bottom: 15px; text-transform: uppercase; font-size: 17px; border-bottom: 1px solid #eee; color: #000; }
+.accion { font-family: 'Courier Prime', monospace; margin-bottom: 15px; line-height: 1.2; text-align: justify; font-size: 17px; color: #333; }
+.personaje { font-family: 'Courier Prime', monospace; text-align: center; width: 80%; margin: 30px auto 0; font-weight: bold; text-transform: uppercase; font-size: 17px; color: #000; }
+.parentesis { font-family: 'Courier Prime', monospace; text-align: center; width: 60%; margin: 0 auto; font-size: 15px; line-height: 1.1; color: #444; }
+.dialogo { font-family: 'Courier Prime', monospace; text-align: center; width: 85%; margin: 5px auto 15px; line-height: 1.2; font-size: 17px; color: #000; }
+.transicion { font-family: 'Courier Prime', monospace; text-align: right; margin-top: 50px; font-weight: bold; text-transform: uppercase; color: #000; }
+
+/* ============================================================
+   MANUAL IA (DISEÑO ESTUDIO)
+   ============================================================ */
+.manual-ia { max-width: 1000px; margin: 60px auto; padding: clamp(20px, 5vw, 50px); background: #050505; border: 1px solid #111; }
+.manual-ia h2 { font-family: 'Playfair Display'; font-size: 32px; color: white; margin-bottom: 30px; border-bottom: 1px solid var(--rojo); padding-bottom: 10px; }
+.prompt-group { margin-bottom: 40px; }
+.prompt-label { font-family: 'IBM Plex Mono'; color: var(--rojo); font-size: 12px; font-weight: bold; display: block; margin-bottom: 12px; text-transform: uppercase; }
+.prompt-content { font-family: 'Courier Prime'; background: #111; padding: 25px; color: #ccc; font-size: 14px; border: 1px solid #222; line-height: 1.6; overflow-x: auto; }
+
+footer { padding: 100px 0; text-align: center; color: #444; font-family: 'IBM Plex Mono'; font-size: 11px; letter-spacing: 2px; }
