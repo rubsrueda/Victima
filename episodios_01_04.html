@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VÍCTIMA — Biblia de Serie Completa</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --negro: #0a0a0a;
+    --blanco: #f0ece4;
+    --rojo: #c0392b;
+    --azul: #2980b9;
+    --gris-oscuro: #1a1a1a;
+    --gris-texto: #999;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--negro);
+    color: var(--blanco);
+    font-family: 'EB Garamond', serif;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  .contenedor { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+  /* NAVEGACIÓN */
+  .nav-episodios {
+    background: var(--gris-oscuro);
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #333;
+  }
+
+  .nav-grid { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+  .nav-ep {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 6px 12px;
+    background: transparent;
+    color: var(--gris-texto);
+    border: 1px solid #333;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+
+  .nav-ep:hover, .nav-ep.active { background: var(--rojo); color: var(--blanco); border-color: var(--rojo); }
+
+  /* EPISODIO HEADER */
+  .ep-header { padding: 80px 0 50px; border-bottom: 1px solid #1e1e1e; }
+  .ep-numero { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: var(--rojo); display: block; margin-bottom: 12px; }
+  .ep-titulo { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 900; line-height: 1; letter-spacing: -1px; margin-bottom: 16px; }
+  .ep-subtitulo { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--gris-texto); letter-spacing: 2px; margin-bottom: 30px; display: block; }
+
+  /* CUADRITOS DISTRIBUCIÓN */
+  .ep-distribucion { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #080808; border: 1px solid #1a1a1a; padding: 20px; }
+  .dist-item { display: flex; flex-direction: column; gap: 5px; }
+  .dist-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+
+  .badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 4px 10px; border: 1px solid; text-transform: uppercase; width: fit-content; }
+  .badge-m { border-color: var(--rojo); color: var(--rojo); }
+  .badge-h { border-color: var(--azul); color: var(--azul); }
+  .badge-esp { border-color: #555; color: #555; }
+
+  /* CASO */
+  .caso { margin-bottom: 80px; padding: 35px; background: #0c0c0c; position: relative; }
+  
+  /* TÍTULO DEL CASO CON LÍNEA */
+  .caso-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+  .caso-num-tipo { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; font-weight: 600; }
+  .header-line { flex: 1; height: 1px; background: #222; }
+  
+  .tipo-m { color: var(--rojo); }
+  .tipo-h { color: var(--azul); }
+
+  .caso-titulo-nombre { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; font-style: italic; margin-bottom: 25px; color: var(--blanco); }
+
+  .ficha { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+  .ficha-label { color: var(--gris-texto); text-transform: uppercase; letter-spacing: 2px; font-size: 10px; display: block; margin-bottom: 3px; }
+  .ficha-valor { color: var(--blanco); display: block; }
+
+  .caso-sinopsis { font-family: 'EB Garamond', serif; font-size: 18px; line-height: 1.8; color: #ccc5ba; margin-bottom: 30px; text-align: justify; }
+
+  .dato-cierre { background: #050505; border: 1px solid #1a1a1a; padding: 25px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #888; line-height: 1.6; }
+  .dato-cierre strong { color: var(--rojo); display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .nota-narrativa { margin-top: 15px; font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: #555; border-top: 1px solid #111; padding-top: 10px; }
+
+  .divisor-bloque { text-align: center; margin: 100px 0; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #222; letter-spacing: 20px; }
+</style>
+</head>
+<body>
+
+<nav class="nav-episodios">
+  <div class="nav-grid">
+    <a class="nav-ep" href="index.html">INICIO</a>
+    <a class="nav-ep active" href="episodios_01_04.html">E01-E04</a>
+    <a class="nav-ep" href="episodios_05_08.html">E05-E08</a>
+    <a class="nav-ep" href="episodios_09_12.html">E09-E12</a>
+    <a class="nav-ep" href="episodios_13_16.html">E13-E16</a>
+    <a class="nav-ep" href="episodios_17_20.html">E17-E20</a>
+    <a class="nav-ep" href="episodios_21_25.html">E21-E25</a>
+  </div>
+</nav>
+
+<div class="contenedor">
+
+  <!-- ============================================================ -->
+  <!-- EPISODIO 01 -->
+  <!-- ============================================================ -->
+  <div class="episodio" id="ep01">
+    <div class="ep-header">
+      <span class="ep-numero">Episodio 01</span>
+      <h1 class="ep-titulo">Herencia de sangre</h1>
+      <span class="ep-subtitulo">Casos 001 – 004 · Cuatro familias. Cuatro finales.</span>
+      
+      <div class="ep-distribucion">
+        <div class="dist-item">
+          <span class="dist-label">Perpetradores (Autoría)</span>
+          <div style="display:flex; gap:5px;"><span class="badge badge-m">2 Mujer</span><span class="badge badge-h">2 Hombre</span></div>
+        </div>
+        <div class="dist-item">
+          <span class="dist-label">Asesinos (Material)</span>
+          <div style="display:flex; gap:5px;"><span class="badge badge-esp">1 Mujer</span><span class="badge badge-esp">3 Hombre</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 001 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-m">Caso 001 — TIPO: AUTORÍA FEMENINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"La granja"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Ernesto V., 67 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perfil</span><span class="ficha-valor">Granjero retirado, viudo, salud frágil.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perpetradora</span><span class="ficha-valor">Hija biológica, 38 años (Autoría Intelectual)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesina Material</span><span class="ficha-valor">La propia Perpetradora (Mujer)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Testamento modificado para herencia única.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Método</span><span class="ficha-valor">Envenenamiento progresivo (Warfarina).</span></div>
+        <div class="ficha-item"><span class="ficha-label">Resolución</span><span class="ficha-valor">Condena a 18 años de prisión. Reducida a 11.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Ernesto había criado sola a su hija tras la muerte prematura de su esposa, otorgándole siempre lo mejor de su modesta renta agrícola. A los 66 años, comenzó a sentirse inusualmente débil y a sufrir sangrados nasales que el médico rural atribuyó erróneamente al desgaste de la edad. Su hija lo cuidaba con una devoción visible que conmovía a toda la comunidad, mientras administraba meticulosamente veneno anticoagulante en sus caldos diarios. Tres meses después, Ernesto falleció de una hemorragia interna masiva en su propia cama. El testamento, firmado apenas dos semanas antes de morir bajo condiciones de confusión cognitiva, la nombraba heredera universal. Solo la insistencia del hermano de Ernesto en realizar una autopsia forense desveló la presencia de niveles letales de Warfarina en los tejidos del anciano.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        En el 35% de los homicidios domésticos donde la víctima es un hombre mayor de 60 años, el perpetrador es un familiar femenino directo. El método más frecuente es el envenenamiento o la negligencia inducida debido a que simulan fallos orgánicos naturales asociados a la senectud.
+        <div class="nota-narrativa">
+          Fuente: estudios forenses comparados (EE. UU., España, México).<br>
+          Nota: La cámara no muestra el momento de la muerte. Solo la mano del anciano sobre una foto de su hija de pequeña.
+        </div>
+        
+        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed #333; text-align: right;">
+          <a href="script_caso_001.html" ... >Ver Guion Técnico de Producción (10 min) →</a>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <!-- CASO 002 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-h">Caso 002 — TIPO: AUTORÍA MASCULINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"El hermano mayor"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Damián O., 19 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perfil</span><span class="ficha-valor">Estudiante universitario, primero en su familia.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perpetrador</span><span class="ficha-valor">Hermano mayor, 27 años (Autoría Intelectual)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">El propio Perpetrador (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Herencia paterna bloqueada por el menor.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Método</span><span class="ficha-valor">Golpe contundente. Escenificado como accidente.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Resolución</span><span class="ficha-valor">Condena a 22 años de prisión.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Damián representaba el orgullo de su madre y la esperanza de progreso de una familia castigada por la precariedad. Su hermano Rafael, tras abandonar los estudios, gestionaba negligentemente los pocos ahorros que el padre había dejado en el taller familiar. Cuando llegó el momento de decidir sobre la venta de la propiedad, Damián se opuso firmemente para proteger el patrimonio futuro. Rafael, acorralado por deudas personales, interceptó a su hermano una noche en la soledad del taller. Utilizó una llave inglesa de gran calibre para asestar un único golpe mortal en la base del cráneo. Tras el acto, Rafael esperó cuarenta minutos antes de llamar a emergencias, tiempo que utilizó para desordenar el lugar y simular un robo violento frustrado.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        Los hombres jóvenes de entre 15 y 29 años representan el grupo demográfico con mayor tasa de victimización por homicidio en prácticamente todos los países del mundo. En conflictos por herencias pequeñas o medianas, la violencia física letal es el recurso más común entre varones con historial de fracaso económico.
+      </div>
+    </div>
+
+    <!-- CASO 003 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-m">Caso 003 — TIPO: AUTORÍA FEMENINA (INTELECTUAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"El padrino"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Marcos T., 44 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perfil</span><span class="ficha-valor">Empresario textil, socio fundador.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perpetradora</span><span class="ficha-valor">Socia comercial, 40 años (Autoría Intelectual)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">Sicario contratado (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Apropiación de activos tras desfalco descubierto.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Método</span><span class="ficha-valor">Disparo a quemarropa con arma silenciada.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Resolución</span><span class="ficha-valor">Condena a 30 años para la autora intelectual.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Marcos y Ana habían fundado una empresa de distribución que se convirtió en el motor económico de la región. Cuando Marcos detectó irregularidades contables masivas y amenazó con denunciar ante la junta, Ana activó un plan de contingencia letal. Utilizó sus contactos para contratar a un intermediario que, a su vez, reclutó a un ejecutor material del entorno delictivo. Marcos fue interceptado en el aparcamiento de un restaurante mientras salía de una cena de negocios. El sicario disparó con precisión militar antes de desaparecer en una motocicleta sin matrícula. El caso solo se resolvió cuando el intermediario fue detenido por otro delito y decidió delatar a Ana para obtener beneficios penitenciarios.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        El homicidio por encargo en contextos empresariales tiene una tasa de resolución judicial del 40% cuando el autor intelectual tiene recursos económicos para una defensa prolongada. El 60% de las autoras intelectuales femeninas en este sector utilizan hombres como ejecutores materiales para evitar el contacto directo con el crimen.
+      </div>
+    </div>
+
+    <!-- CASO 004 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-h">Caso 004 — TIPO: AUTORÍA MASCULINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"Deudas de sangre"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Iván R., 31 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perfil</span><span class="ficha-valor">Mecánico, sostén de madre dependiente.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perpetrador</span><span class="ficha-valor">Acreedor informal, 50 años (Autoría Intelectual)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">El propio Perpetrador (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Deuda impagada de 3.200 euros.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Resolución</span><span class="ficha-valor">Condena a 15 años. Clasificado tercer grado en 7.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Iván había solicitado un préstamo usurero a un prestamista local para costear el tratamiento de su madre enferma. Al ser incapaz de cumplir con los plazos de interés semanales, fue citado en un almacén bajo la promesa de renegociar las condiciones. La reunión se convirtió rápidamente en una agresión punitiva para enviar un mensaje al resto de deudores del barrio. El prestamista, personalmente, golpeó a Iván hasta causarle un traumatismo craneoencefálico irreversible. El cuerpo fue abandonado en un descampado y no fue localizado hasta dos días después por un paseante. Su madre no supo de su muerte hasta que los vecinos, ante el silencio policial, tuvieron que informarle.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        Los hombres representan el 79% de las víctimas de homicidios relacionados con deudas, extorsión y conflictos económicos informales. La mayoría de estas muertes no se consideran crímenes de odio o de género, quedando diluidas en las estadísticas generales de delincuencia.
+      </div>
+    </div>
+  </div>
+
+  <div class="divisor-bloque">••••••••••••••••</div>
+
+  <!-- ============================================================ -->
+  <!-- EPISODIO 02 -->
+  <!-- ============================================================ -->
+  <div class="episodio" id="ep02">
+    <div class="ep-header">
+      <span class="ep-numero">Episodio 02</span>
+      <h1 class="ep-titulo">Custodia</h1>
+      <span class="ep-subtitulo">Casos 005 – 008 · Lo que se pierde cuando se pierde un padre.</span>
+      
+      <div class="ep-distribucion">
+        <div class="dist-item">
+          <span class="dist-label">Perpetradores (Autoría)</span>
+          <div style="display:flex; gap:5px;"><span class="badge badge-m">2 Mujer</span><span class="badge badge-h">2 Hombre</span></div>
+        </div>
+        <div class="dist-item">
+          <span class="dist-label">Asesinos (Material)</span>
+          <div style="display:flex; gap:5px;"><span class="badge badge-esp">1 Mujer</span><span class="badge badge-esp">3 Hombre</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 005 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-m">Caso 005 — TIPO: AUTORÍA FEMENINA (INTELECTUAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"Régimen de visitas"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Carlos M., 48 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perpetradora</span><span class="ficha-valor">Exesposa, 41 años (Autoría Intelectual)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">Pareja actual de la exesposa (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Conflicto de autoridad sobre los hijos comunes.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Resolución</span><span class="ficha-valor">Condena a 20 años para el ejecutor material.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Carlos acudía puntualmente cada quince días al domicilio de su exmujer para recoger a sus dos hijos menores. La relación se había tensado tras la entrada de una nueva pareja masculina en la vida de Sandra, la madre. Sandra alimentó durante meses una narrativa de miedo y hostilidad hacia Carlos, convenciendo a su actual pareja de que la presencia del padre era una agresión constante. Una tarde de viernes, tras una discusión en la puerta del rellano por un retraso de cinco minutos, el agresor salió con un cuchillo de cocina. Carlos fue apuñalado en el tórax mientras sus hijos gritaban desde el pasillo interior de la vivienda. El agresor alegó defensa propia, pero el ángulo de la herida demostró que Carlos estaba retrocediendo hacia el ascensor.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        En separaciones con hijos, los hombres son víctimas de homicidio en contexto de conflicto de pareja en una proporción de 3 a 1 respecto a las mujeres cuando interviene una tercera persona como brazo ejecutor de la disputa.
+      </div>
+    </div>
+
+    <!-- CASO 006 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-m">Caso 006 — TIPO: AUTORÍA FEMENINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"Pérdida inminente"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Roberto A., 34 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perpetradora</span><span class="ficha-valor">Expareja, madre de sus hijos (Autoría Intelectual)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesina Material</span><span class="ficha-valor">La propia Perpetradora (Mujer)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Resolución judicial favorable de custodia al padre.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Método</span><span class="ficha-valor">Disparo con arma de fuego (Revólver).</span></div>
+        <div class="ficha-item"><span class="ficha-label">Resolución</span><span class="ficha-valor">Condena a 14 años. Libertad condicional a los 9.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Roberto había iniciado un arduo proceso judicial para obtener la custodia compartida tras documentar graves negligencias en el entorno materno. Un juez de familia había emitido una resolución provisional otorgándole la custodia total de los menores a partir del lunes siguiente. Tres días antes de que los niños se mudaran permanentemente con él, Roberto acudió a recoger las últimas pertenencias escolares. Su expareja lo esperó en el acceso al edificio con un arma de fuego que pertenecía a su propio padre. Disparó a quemarropa cuando Roberto le daba la espalda para cargar una caja en el maletero de su vehículo. Ante la policía, ella justificó el acto alegando que "ningún juez le quitaría a sus hijos mientras estuviera viva".
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        En el 78% de los homicidios de pareja íntima masculina estudiados en Europa occidental, el conflicto por custodia o separación definitiva era el detonante inmediato. La cobertura mediática de estos casos es drásticamente inferior a la de casos con víctima femenina.
+      </div>
+    </div>
+
+    <!-- CASO 007 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-h">Caso 007 — TIPO: AUTORÍA MASCULINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"El abuelo"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Félix G., 62 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">Yerno de la víctima (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Félix había denunciado maltrato hacia su hija.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Resolución</span><span class="ficha-valor">Condena a 25 años de prisión.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Félix llevaba meses observando el cambio de comportamiento de su hija y los moratones que intentaba ocultar con maquillaje. Decidió presentar una denuncia formal por violencia doméstica, pese a que su hija, aterrorizada, se negaba a declarar contra su marido. El yerno, al recibir la notificación judicial, localizó a Félix en el bar donde solía desayunar tras su jubilación. La agresión fue rápida y de una brutalidad extrema ante varios testigos que no se atrevieron a intervenir a tiempo. Félix sufrió una hemorragia cerebral y falleció en el hospital tres días después sin recuperar el conocimiento. Su hija nunca pudo perdonarse el silencio que, indirectamente, costó la vida de su padre.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        El homicidio de testigos o denunciantes masculinos por represalia en contextos de violencia intrafamiliar es una categoría estadística invisible. No se contabilizan como víctimas de violencia doméstica, quedando registrados como homicidios comunes por riña o agresión.
+      </div>
+    </div>
+
+    <!-- CASO 008 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-h">Caso 008 — TIPO: AUTORÍA MASCULINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"Sin nombre en el protocolo"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Tomás P., 29 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">Exnovio de la actual pareja (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Celos obsesivos y rivalidad de pareja desplazada.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Método</span><span class="ficha-valor">Atropello intencionado.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Resolución</span><span class="ficha-valor">Condena a 18 años por homicidio doloso.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Tomás no conocía de nada a su agresor y nunca habían cruzado palabra alguna fuera de las redes sociales. El exnovio de su actual pareja, Sandra, lo había estado vigilando durante semanas, rastreando sus horarios y rutas habituales de trabajo. Sandra utilizaba frecuentemente a Tomás como comparación para humillar a su exnovio, provocando un caldo de cultivo de odio ciego. Una tarde de lluvia, el agresor lo identificó saliendo de la oficina y aceleró su vehículo directamente contra él en un paso de cebra. Tomás murió en el acto debido al impacto masivo. La investigación policial tardó seis meses en conectar los nombres de Sandra y el agresor, desvelando una trama de celos que no figuraba en ningún protocolo preventivo.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        Los hombres son víctimas de homicidio relacionado con celos o rivalidad de pareja con una frecuencia equivalente a la de las mujeres, pero el hecho raramente se clasifica como "violencia de género" en los marcos legales actuales. La invisibilidad estadística impide el desarrollo de medidas de alejamiento para hombres en riesgo por ex-parejas de sus actuales compañeras.
+      </div>
+    </div>
+  </div>
+
+  <div class="divisor-bloque">••••••••••••••••</div>
+
+  <!-- ============================================================ -->
+  <!-- EPISODIO 03 -->
+  <!-- ============================================================ -->
+  <div class="episodio" id="ep03">
+    <div class="ep-header">
+      <span class="ep-numero">Episodio 03</span>
+      <h1 class="ep-titulo">Seguro de vida</h1>
+      <span class="ep-subtitulo">Casos 009 – 012 · El dinero como móvil criminal.</span>
+      
+      <div class="ep-distribucion">
+        <div class="dist-item">
+          <span class="dist-label">Perpetradores (Autoría)</span>
+          <div style="display:flex; gap:5px;"><span class="badge badge-m">2 Mujer</span><span class="badge badge-h">2 Hombre</span></div>
+        </div>
+        <div class="dist-item">
+          <span class="dist-label">Asesinos (Material)</span>
+          <div style="display:flex; gap:5px;"><span class="badge badge-esp">1 Mujer</span><span class="badge badge-esp">3 Hombre</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 009 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-m">Caso 009 — TIPO: AUTORÍA FEMENINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"La viuda alegre"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Héctor L., 55 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perfil</span><span class="ficha-valor">Constructor, dos hijos adultos.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesina Material</span><span class="ficha-valor">Segunda esposa (Mujer)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Seguro de vida de 800.000 euros.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Método</span><span class="ficha-valor">Sobredosis de sedantes mezclados con alcohol.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Resolución</span><span class="ficha-valor">Condena a 20 años de prisión.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Héctor había aumentado su póliza de seguro dieciocho meses antes de su muerte a instancias de su joven esposa. Sus hijos del primer matrimonio, que nunca aceptaron la relación, insistieron en una autopsia exhaustiva tras notar inconsistencias en el relato del fallecimiento. Los análisis forenses revelaron niveles de sedantes de uso hospitalario que eran incompatibles con un consumo voluntario o accidental. La investigación desveló que la esposa mantenía una relación paralela y que había planeado el crimen para sanear sus deudas personales. La defensa intentó argumentar un cuadro de depresión del marido, pero el registro de compras de fármacos de ella fue determinante. Héctor murió en su sillón favorito mientras ella veía la televisión en la habitación de al lado esperando el silencio definitivo.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        El envenenamiento es el método más frecuente en homicidios premeditados cometidos por mujeres en el hogar. En casos con pólizas de seguro, la sospecha inicial sobre la pareja femenina es estadísticamente menor que cuando el sospechoso es masculino, lo que retrasa la apertura de investigaciones forenses.
+      </div>
+    </div>
+
+    <!-- CASO 010 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-h">Caso 010 — TIPO: AUTORÍA MASCULINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"El socio del fondo"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Andrés K., 47 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">Socio mayoritario (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Fraude empresarial descubierto por la víctima.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Andrés había contratado a un auditor externo para revisar las cuentas de la gestora de fondos que compartía con su socio de toda la vida. Los resultados preliminares revelaban un desvío de capitales hacia sociedades pantalla que su socio gestionaba en la sombra. Andrés cometió el error de confrontarlo antes de presentar la denuncia formal ante la comisión de valores. Aquella misma noche, su socio lo citó en el almacén de archivos de la empresa para "darle una explicación razonable". Andrés murió por una paliza ejecutada con una barra de hierro; su socio intentó prender fuego al local para borrar las huellas del crimen. La rápida intervención de los bomberos permitió recuperar pruebas biológicas cruciales en la ropa del agresor.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        Los hombres en posiciones de exposición financiera tienen tres veces más probabilidad de ser víctimas de homicidio por manos de sus propios socios ante descubrimientos de fraude. El 90% de estos agresores no tienen antecedentes violentos previos al crimen corporativo.
+      </div>
+    </div>
+
+    <!-- CASO 011 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-m">Caso 011 — TIPO: AUTORÍA FEMENINA (INTELECTUAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"La deuda materna"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Joel F., 23 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perpetradora</span><span class="ficha-valor">Madre de deudora (Autoría Intelectual)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">Hijo menor de la perpetradora (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Eliminación de acreedor de su hija.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Joel intentaba cobrar una deuda de dos mil euros que la hija de la perpetradora había contraído en negocios turbios de barrio. La madre, en lugar de mediar o pagar, decidió que Joel representaba una amenaza inaceptable para la seguridad de su hija. Manipuló a su hijo menor, de apenas 19 años, contándole que Joel había intentado abusar de su hermana como forma de cobro. El joven, cegado por el relato materno y el concepto de honor familiar, interceptó a Joel en el portal de su casa. Le asestó tres puñaladas en el abdomen con un cuchillo de caza mientras su madre vigilaba desde la esquina de la calle. Joel murió en la mesa de operaciones tras dos paradas cardíacas; la madre fue procesada como autora intelectual tras la confesión quebrada del hijo en comisaría.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        La figura de la "madre instigadora" en delitos violentos ejecutados por hijos varones es un fenómeno documentado en sociología criminal pero raramente procesado penalmente con el mismo rigor que la autoría material. El 18% de los homicidios entre jóvenes en entornos conflictivos tienen un origen de instigación femenina familiar.
+      </div>
+    </div>
+
+    <!-- CASO 012 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-h">Caso 012 — TIPO: AUTORÍA MASCULINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"El beneficiario"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Santiago D., 60 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">Hijo adoptivo (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Herencia y propiedad de terreno rural.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Santiago había adoptado a su hijo cuando este era un adolescente con problemas, dándole su apellido y la gestión de sus tierras. Con el tiempo, la relación se deterioró debido al deseo del hijo de vender las parcelas para invertir en negocios urbanos de alto riesgo. Santiago se negó sistemáticamente, protegiendo el legado familiar que tanto le había costado levantar. Durante una fuerte discusión en el cobertizo de las herramientas, el hijo utilizó una maza para golpear a su padre repetidamente. Intentó ocultar el cuerpo enterrándolo bajo el estiércol de la granja, pero el olor y las contradicciones en sus versiones ante la guardia civil lo delataron. Santiago murió a manos del hombre al que le dio un futuro, en el mismo suelo que intentó proteger para él.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        Los hombres mayores que viven en entornos rurales representan un segmento de alta vulnerabilidad ante el homicidio patrimonial por parte de descendientes varones. La soledad geográfica facilita el ocultamiento del cadáver y la manipulación de la escena del crimen.
+      </div>
+    </div>
+  </div>
+
+  <div class="divisor-bloque">••••••••••••••••</div>
+
+  <!-- ============================================================ -->
+  <!-- EPISODIO 04 -->
+  <!-- ============================================================ -->
+  <div class="episodio" id="ep04">
+    <div class="ep-header">
+      <span class="ep-numero">Episodio 04</span>
+      <h1 class="ep-titulo">El testigo</h1>
+      <span class="ep-subtitulo">Casos 013 – 016 · Ver no siempre es vivir para contarlo.</span>
+      
+      <div class="ep-distribucion">
+        <div class="dist-item">
+          <span class="dist-label">Perpetradores (Autoría)</span>
+          <div style="display:flex; gap:5px;"><span class="badge badge-m">3 Mujer</span><span class="badge badge-h">1 Hombre</span></div>
+        </div>
+        <div class="dist-item">
+          <span class="dist-label">Asesinos (Material)</span>
+          <div style="display:flex; gap:5px;"><span class="badge badge-esp">1 Mujer</span><span class="badge badge-esp">3 Hombre</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 013 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-h">Caso 013 — TIPO: AUTORÍA MASCULINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"El vecino"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Bernardo C., 51 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">Vecino colindante (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Venganza por filmación de acto violento.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Bernardo era un hombre tranquilo que grabó con su teléfono móvil una agresión brutal en el rellano del edificio. Envió el vídeo a la policía, lo que resultó en la detención inmediata de su vecino, un hombre con historial delictivo. El agresor, tras ser liberado con cargos y una orden de alejamiento de su mujer, regresó al edificio ignorando toda prohibición legal. Interceptó a Bernardo cuando este bajaba la basura en el cuarto técnico del garaje, fuera de la vista de las cámaras. La paliza fue de tal magnitud que Bernardo sufrió daños internos irreversibles, falleciendo antes de que los servicios médicos pudieran estabilizarlo. Su muerte dejó el caso original sin el testimonio clave necesario para la condena del agresor.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        Los testigos civiles masculinos son el grupo con mayor índice de represalia homicida en entornos de violencia vecinal o criminal. La falta de programas de protección para testigos de "baja intensidad" resulta en una vulnerabilidad letal.
+      </div>
+    </div>
+
+    <!-- CASO 014 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-m">Caso 014 — TIPO: AUTORÍA FEMENINA (MATERIAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"La declaración"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Pablo H., 36 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesina Material</span><span class="ficha-valor">Conductora acusada (Mujer)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Evitar condena penal por atropello previo.</span></div>
+        <div class="ficha-item"><span class="ficha-label">Método</span><span class="ficha-valor">Envenenamiento (Anticongelante).</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Pablo era el único testigo presencial que podía identificar a la conductora que había arrollado mortalmente a un ciclista meses atrás. Ella, una mujer de posición acomodada, intentó comprar su silencio sin éxito. Ante la inminencia del juicio, fingió querer pedirle disculpas y lo invitó a una reunión privada en su domicilio. Sirvió a Pablo una bebida con una alta concentración de etilenglicol, aprovechando que el sabor dulce del anticongelante queda enmascarado en cócteles. Pablo murió de un fallo renal fulminante a las 48 horas, lo que inicialmente se trató como un proceso gripal complicado. Solo la pericia de un forense que notó cristales de oxalato en los riñones permitió reabrir el caso y encontrar el tóxico en el fregadero de la perpetradora.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        Las mujeres que cometen homicidios premeditados para proteger su estatus socioeconómico utilizan métodos "limpios" en el 65% de los casos. El envenenamiento permite una ventana de tiempo suficiente para destruir pruebas antes de que se levante la sospecha criminal.
+      </div>
+    </div>
+
+    <!-- CASO 015 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-m">Caso 015 — TIPO: AUTORÍA FEMENINA (INTELECTUAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"La orden"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Agente Luis V., 40 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perpetradora</span><span class="ficha-valor">Líder de red de extorsión (Mujer)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">Sicario de la organización (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Eliminación de investigador policial incorruptible.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Luis era un policía veterano que había rechazado sistemáticamente los sobornos de la principal red de extorsión de la frontera. La líder de la organización, una mujer conocida por su pragmatismo cruel, decidió que Luis era un obstáculo operativo demasiado costoso. Dio la orden directa a su jefe de seguridad de ejecutarlo de forma que sirviera de ejemplo para el resto del cuerpo policial. Luis fue acribillado a la salida de su turno mientras caminaba hacia su coche en el parking de la comisaría. Los disparos fueron efectuados desde una furgoneta robada que fue incendiada minutos después a pocos kilómetros. La líder nunca tocó el arma, pero la interceptación de mensajes encriptados permitió vincular la orden con su terminal personal.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        En redes de crimen organizado lideradas por mujeres, el uso de la violencia letal es puramente instrumental y rara vez pasional. Los agentes de seguridad masculinos son sus víctimas preferentes cuando las vías de corrupción económica fallan.
+      </div>
+    </div>
+
+    <!-- CASO 016 -->
+    <div class="caso">
+      <div class="caso-header">
+        <span class="caso-num-tipo tipo-m">Caso 016 — TIPO: AUTORÍA FEMENINA (INTELECTUAL)</span>
+        <div class="header-line"></div>
+      </div>
+      <div class="caso-titulo-nombre">"El periodista"</div>
+      <div class="ficha">
+        <div class="ficha-item"><span class="ficha-label">Víctima</span><span class="ficha-valor">Eduardo S., 43 (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Perpetradora</span><span class="ficha-valor">Funcionaria corrupta (Mujer)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Asesino Material</span><span class="ficha-valor">Sicario (Hombre)</span></div>
+        <div class="ficha-item"><span class="ficha-label">Móvil</span><span class="ficha-valor">Evitar publicación de investigación periodística.</span></div>
+      </div>
+      <div class="caso-sinopsis">
+        Eduardo estaba a punto de cerrar una investigación que vinculaba a una alta funcionaria municipal con el cobro de comisiones ilegales en obras públicas. Recibió advertencias previas que decidió ignorar en nombre del rigor informativo. La funcionaria, temiendo el fin de su carrera política, contrató a un profesional del crimen para silenciarlo de forma definitiva. Eduardo fue asaltado en su domicilio; el asesino no se llevó nada de valor, pero disparó a la cabeza antes de formatear los discos duros del periodista. Su cuerpo fue hallado por su mujer al día siguiente, rodeado de notas de investigación esparcidas por el suelo. La investigación oficial fue archivada dos veces por falta de pruebas, demostrando la eficacia del sicariato cuando hay poder institucional detrás.
+      </div>
+      <div class="dato-cierre">
+        <strong>Dato de cierre</strong>
+        El 82% de los periodistas asesinados en el mundo son hombres. La impunidad en estos casos, especialmente cuando hay autoras intelectuales con recursos para obstruir la justicia, supera el 90% en la mayoría de las jurisdicciones.
+        <div class="nota-narrativa">
+          Fuente: Reporteros Sin Fronteras / Auditoría Criminal Internacional.<br>
+          Nota: La escena final del caso muestra el disco duro vacío de Eduardo girando en silencio sobre el escritorio.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  VÍCTIMA — Biblia de Serie Completa · Bloque Episodios 01-04 · Todos los derechos reservados
+</footer>
+
+</body>
+</html>
