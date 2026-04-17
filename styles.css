@@ -1,0 +1,237 @@
+:root {
+  --negro: #0a0a0a;
+  --blanco: #f0ece4;
+  --rojo: #c0392b;
+  --gris-oscuro: #1a1a1a;
+  --gris-medio: #2e2e2e;
+  --gris-texto: #999;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--negro);
+  color: var(--blanco);
+  font-family: 'EB Garamond', serif;
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+/* PORTADA */
+.portada {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 20px;
+  border-bottom: 1px solid #222;
+}
+
+.titulo-principal {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(80px, 15vw, 160px);
+  font-weight: 900;
+  letter-spacing: -4px;
+  line-height: 0.85;
+}
+
+.titulo-principal span { color: var(--rojo); }
+
+.tagline {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gris-texto);
+  margin-top: 30px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 60px;
+  max-width: 900px;
+}
+
+.stat-item .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--rojo);
+  display: block;
+}
+
+.stat-item .label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gris-texto);
+}
+
+/* NAVEGACIÓN */
+.nav-episodios {
+  background: var(--gris-oscuro);
+  padding: 15px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #333;
+}
+
+.nav-grid {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.nav-ep {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--gris-texto);
+  border: 1px solid #333;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.nav-ep:hover, .nav-ep.active {
+  background: var(--rojo);
+  color: white;
+  border-color: var(--rojo);
+}
+
+/* EPISODIO */
+.contenedor { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+.ep-header { padding: 80px 0 50px; }
+
+.ep-numero {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: var(--rojo);
+  text-transform: uppercase;
+  display: block;
+}
+
+.ep-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(40px, 8vw, 70px);
+  font-weight: 900;
+  margin: 15px 0;
+}
+
+.ep-subtitulo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--gris-texto);
+  margin-bottom: 30px;
+}
+
+/* CUADRITOS DE DISTRIBUCIÓN */
+.ep-distribucion {
+  display: flex;
+  gap: 20px;
+  background: #0a0a0a;
+  padding: 20px;
+  border: 1px solid #1a1a1a;
+}
+
+.dist-block { border-right: 1px solid #222; padding-right: 20px; }
+.dist-block:last-child { border: none; }
+
+.badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.badge-m { color: var(--rojo); }
+.badge-h { color: #4a6fa5; }
+
+/* CASO */
+.caso {
+  margin: 60px 0;
+  padding: 40px;
+  background: #0f0f0f;
+  border-left: 5px solid #222;
+}
+
+.perp-femenina { border-left-color: var(--rojo); }
+
+.caso-header {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--gris-texto);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.caso-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.ficha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  border-top: 1px solid #222;
+  padding-top: 25px;
+}
+
+.ficha-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--gris-texto);
+  display: block;
+}
+
+.ficha-valor { font-family: 'EB Garamond', serif; font-size: 17px; }
+
+.caso-sinopsis {
+  margin: 30px 0;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #ccc5ba;
+}
+
+.dato-cierre {
+  background: #050505;
+  padding: 25px;
+  border: 1px solid #1a1a1a;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+}
+
+.dato-cierre strong {
+  color: var(--rojo);
+  display: block;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.divisor {
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 15px;
+  color: #222;
+  margin: 80px 0;
+}
