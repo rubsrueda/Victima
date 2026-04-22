@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;600&family=Playfair+Display:ital,wght@0,900;1,900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <title>VÍCTIMA - Petición de Firmas</title>
+    <style>
+        /* Estilos específicos para formularios que no estaban en tu CSS */
+        input, textarea {
+            width: 100%;
+            background: #111;
+            border: 1px solid #333;
+            color: var(--blanco);
+            padding: 15px;
+            font-family: 'IBM Plex Mono', monospace;
+            margin-bottom: 20px;
+        }
+        button.submit-btn {
+            background: var(--rojo);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        button.submit-btn:hover { background: #e74c3c; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+    <nav class="nav-top">
+        <div class="nav-grid">
+            <a href="index.html" class="nav-ep">VOLVER AL INICIO</a>
+        </div>
+    </nav>
+
+    <header class="portada" style="min-height: 60vh;">
+        <h1 class="titulo-principal">FIRMA<span>.</span></h1>
+        <p class="tagline">97 de cada 100 víctimas te necesitan</p>
+    </header>
+
+    <main class="contenedor">
+        <div class="caso perp-femenina">
+            <div class="caso-header">
+                <span class="caso-num-tipo tipo-m">MANIFIESTO</span>
+                <div class="header-line"></div>
+            </div>
+            <p class="caso-sinopsis">
+                No buscamos privilegios, buscamos igualdad ante la ley y en la narrativa pública. Al firmar, exiges que las plataformas de contenido y las instituciones traten cada uno de los 100 casos con el mismo rigor, presupuesto y respeto.
+            </p>
+        </div>
+
+        <section class="manual-ia">
+            <form action="#" method="POST">
+                <label class="prompt-label">Nombre Completo</label>
+                <input type="text" name="nombre" placeholder="Nombre o pseudónimo..." required>
+                
+                <label class="prompt-label">Correo Electrónico (Privado)</label>
+                <input type="email" name="email" placeholder="Para validar tu firma..." required>
+                
+                <label class="prompt-label">Motivo del apoyo</label>
+                <textarea name="mensaje" rows="4" placeholder="¿Por qué es necesaria esta serie?"></textarea>
+                
+                <center>
+                    <button type="submit" class="submit-btn">REGISTRAR MI FIRMA</button>
+                </center>
+            </form>
+        </section>
+    </main>
+
+    <footer>VÍCTIMA PROJECT — 25 EPISODIOS — UNA SOLA VERDAD</footer>
+</body>
+</html>
