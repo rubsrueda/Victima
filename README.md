@@ -1,6 +1,45 @@
 VÍCTIMA — Serie Completa
 100 casos · 25 episodios · Una sola verdad
 VÍCTIMA es un proyecto de serie procedimental y documental de alta intensidad que explora la invisibilidad de la victimización masculina y la complejidad de los perfiles criminales. A través de 100 casos detallados, la serie descompone la narrativa tradicional del crimen para centrarse en los datos forenses, el móvil patrimonial y el silencio social que rodea a estas muertes.
+
+"Víctima"
+
+es una propuesta disruptiva para una serie documental o de investigación que utiliza la estadística para cuestionar el discurso oficial sobre la violencia y la asignación de recursos públicos.
+
+Es un manifiesto estadístico y un pitch visual para una serie de 25 episodios.
+Su objetivo es exponer una "verdad silenciada" mediante el análisis de los 100 casos estadísticos de asesinato a nivel mundial:
+
+El Desequilibrio de la Narrativa:
+El sitio argumenta que el foco mediático y político se centra casi exclusivamente en la "Violencia de Género" (que representa, el 2-3% de las víctimas totales), ignorando al 97% restante.
+
+Radiografía de la Violencia: Presenta las cifras reales, que rompen el paradigma habitual:
+
+Muestra que la gran mayoría de las víctimas son hombres (95 de cada 100).
+
+Destaca la participación de la mujer como perpetradora (45 de cada 100 casos entre materiales e intelectuales), contrastando con la baja tasa de victimización femenina.
+
+Crítica a la Gestión de Recursos: Denuncia la ineficiencia en el sistema, donde el 50% del presupuesto se destina a una fracción mínima de los casos, sugiriendo que la prioridad es mantener una narrativa política en lugar de proteger a las víctimas por igual.
+
+
+
+Speech de Ascensor (Elevator Pitch)
+
+¿sabías que hoy en día la conversación y las políticas públicas se centran en proteger a solo 3 de cada 100 víctimas de asesinato, dejando al otro 97% en la sombra?
+
+He creado 'Víctima', una propuesta de serie documental de 25 episodios que analiza los 100 casos reales promedio para confrontar la narrativa actual con la estadística pura. Los datos son demoledores: mientras el presupuesto se divide al 50%, la realidad de quién mata y quién muere no encaja con el discurso oficial.
+
+No es solo una serie de 'true crime'; es un análisis sistémico sobre cómo la ideología ha secuestrado la justicia y los recursos de protección. Busco mostrar la 'sola verdad' que los grandes medios no quieren contar.
+
+¿Te interesaría ver el desglose de los datos y el piloto del proyecto?"
+
+Puntos clave para defender la página si te preguntan:
+
+El Gancho: "95 de cada 100 víctimas son hombres, pero el sistema no los ve".
+
+La Tensión: "Hay 5 mujeres asesinas por cada mujer asesinada. ¿Por qué no estamos hablando de esto?".
+
+La Solución: "La serie propone una visión igualitaria de la justicia basada en hechos, no en relatos prefabricados".
+
 📊 Estadísticas Maestras del Proyecto
 El proyecto se rige por un control estadístico estricto para reflejar la realidad de los datos documentados:
 Categoría	Valor
